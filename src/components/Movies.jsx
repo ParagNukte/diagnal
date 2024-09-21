@@ -5,14 +5,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 function Movies() {
   const [movieData, setMovieData] = useState([]);
-  const [pageCount, setPageCount] = useState(1); // Start from page 1
+  const [pageCount, setPageCount] = useState(1);
   const [allMovies, setAllMovies] = useState(0);
   const [error, setError] = useState(null);
   const [handleSearch, setHandleSearch] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    fetchData(pageCount); // Fetch data for page 1 on initial load
+    fetchData(pageCount); 
   }, []);
 
   const handleSearchData = useCallback((data) => {
@@ -21,13 +21,6 @@ function Movies() {
   }, []);
 
   const fetchData = async (pageNumber) => {
-    console.log(
-      "at the top",
-      "Movies Data ::",
-      movieData,
-      "Page Count::",
-      pageCount
-    );
     try {
       const response = await fetch(
         `https://test.create.diagnal.com/data/page${pageNumber}.json`
@@ -39,7 +32,7 @@ function Movies() {
 
       setMovieData((prevData) => [...prevData, ...content]);
       setAllMovies(data.page["total-content-items"]);
-      setPageCount((prevCount) => prevCount + 1); // Increment pageCount for the next fetch
+      setPageCount((prevCount) => prevCount + 1);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch movies. Please try again later.");
@@ -60,7 +53,7 @@ function Movies() {
         <div className="grid grid-cols-3 gap-4 m-2 mt-12 text-xl">
           {filteredMovies.map((item, index) => (
             <PosterCard
-              key={index} // Use a unique id if available
+              key={index}
               posterImage={
                 item["poster-image"] === "posterthatismissing.jpg"
                   ? "placeholder_for_missing_posters.png"
@@ -72,14 +65,14 @@ function Movies() {
         </div>
       ) : (
         <InfiniteScroll
-          dataLength={movieData.length} // Update to use the actual length of movieData
-          next={() => fetchData(pageCount)} // Fetch the next page based on current pageCount
-          hasMore={pageCount <= 3 && movieData.length < allMovies} // Allow fetching only if we have pages left
+          dataLength={movieData.length} 
+          next={() => fetchData(pageCount)}
+          hasMore={pageCount <= 3 && movieData.length < allMovies} 
         >
           <div className="grid grid-cols-3 gap-4 m-2 mt-12 text-xl">
             {movieData.map((item, index) => (
               <PosterCard
-                key={index} // Use a unique id if available
+                key={index}
                 posterImage={
                   item["poster-image"] === "posterthatismissing.jpg"
                     ? "placeholder_for_missing_posters.png"
